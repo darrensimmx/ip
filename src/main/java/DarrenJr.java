@@ -95,6 +95,22 @@ class DarrenJr {
                     continue;
                 }
 
+                if (input.startsWith("delete ")) {
+                    try {
+                        String[] p = input.split("\\s+");
+                        if (p.length < 2) throw new DarrenAssistantException("Usage: delete <number>");
+                        int idx = Integer.parseInt(p[1]) - 1; // convert to 0-based
+                        if (idx < 0 || idx >= tasks.size()) throw new DarrenAssistantException("No such task: " + p[1]);
+
+                        Task removed = tasks.remove(idx);
+                        Ui.printDeleted(removed, tasks.size());
+                    } catch (NumberFormatException e) {
+                        Ui.printError("That’s not a number.");
+                    }
+                }
+
+
+
                 // everything else
                 throw new DarrenAssistantException("Sorry, I don't understand that.");
 

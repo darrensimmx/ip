@@ -49,6 +49,14 @@ public class Ui {
         printLine();
     }
 
+    public static void printDeleted(Task t, int count) {
+        printLine();
+        System.out.println("Noted. I've removed this task:");
+        System.out.println(" " + t);
+        System.out.println("Now you have " +  count + " tasks in the list.");
+        printLine();
+    }
+
 
     private static void printLine() {
         System.out.println("_____________________________________________________");

@@ -1,33 +1,38 @@
+import java.util.ArrayList;
+
 public class TaskList {
-    private final Task[] tasks = new Task[100];
-    private int size = 0;
+    private final ArrayList<Task> tasks;
+
+    public TaskList() {
+        this.tasks = new ArrayList<>();
+    }
 
     public void add(Task t) {
-        if (size < tasks.length) {
-            tasks[size] = t;
-            size++;
-        } else {
-            System.out.println("Task list is full!");
-        }
+        tasks.add(t);
     }
 
     public int size() {
-        return size;
+        return tasks.size();
     }
 
     public Task get(int index) {
-        if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
-        return tasks[index];
+        return tasks.get(index);
     }
 
 
-    String toNumberedString() {
-        if (size == 0) return "(no tasks yet)";
+    public String toNumberedString() {
+        if (tasks.isEmpty()) {
+            return "no tasks yet";
+        }
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < size; i++) {
-            sb.append(i + 1).append(". ").append(tasks[i]).append("\n");
+        for (int i = 0; i < tasks.size(); i++) {
+            sb.append(i + 1).append(".").append(tasks.get(i)).append("\n");
         }
         return sb.toString().trim();
+    }
+
+    public Task remove(int idx) {
+        return tasks.remove(idx);
     }
 
 }
