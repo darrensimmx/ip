@@ -15,6 +15,12 @@ public class TaskList {
         return size;
     }
 
+    public Task get(int index) {
+        if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
+        return tasks[index];
+    }
+
+
     String toNumberedString() {
         if (size == 0) return "(no tasks yet)";
         StringBuilder sb = new StringBuilder();
@@ -23,4 +29,5 @@ public class TaskList {
         }
         return sb.toString().trim();
     }
+
 }

@@ -11,15 +11,29 @@ public class Ui {
         printLine();
     }
 
+    public static void printAdded(Task t) {
+        printLine();
+        System.out.println("added: " + t);
+        printLine();
+    }
+
     public static void printGoodbye() {
         printLine();
         System.out.println("Bye. Hope to see you again soon!");
         printLine();
     }
 
-    public static void printAdded(Task t) {
+    public static void printMarked(Task t) {
         printLine();
-        System.out.println("added: " + t);
+        System.out.println("Nice! I've marked this task as done:");
+        System.out.println("  " + t);
+        printLine();
+    }
+
+    public static void printUnmarked(Task t) {
+        printLine();
+        System.out.println("OK, I've marked this task as not done yet:");
+        System.out.println("  " + t);
         printLine();
     }
 
@@ -28,6 +42,7 @@ public class Ui {
         System.out.println(tasks.toNumberedString());
         printLine();
     }
+
 
     private static void printLine() {
         System.out.println("_____________________________________________________");

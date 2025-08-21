@@ -14,20 +14,33 @@ class DarrenJr {
         Ui.printWelcome();
 
         while (true) {
-            String input = sc.nextLine();
+            String input = sc.nextLine().trim();
 
-            if (input.toLowerCase().equals("bye")) {
+            if (input.equalsIgnoreCase("bye")) {
                 Ui.printGoodbye();
                 break;
-            } else if (input.toLowerCase().equals("list")) {
+
+            } else if (input.equalsIgnoreCase("list")) {
                 Ui.printList(tasks);
+
+            } else if (input.startsWith("mark ")) {
+                int index = Integer.parseInt(input.split(" ")[1]) - 1; // 1-based input
+                Task t = tasks.get(index);
+                t.markAsDone();
+                Ui.printMarked(t);
+
+            } else if (input.startsWith("unmark ")) {
+                int index = Integer.parseInt(input.split(" ")[1]) - 1;
+                Task t = tasks.get(index);
+                t.markAsNotDone();
+                Ui.printUnmarked(t);
+
             } else {
                 Task t = new Task(input);
                 tasks.add(t);
-                ui.printAdded(t);
+                Ui.printAdded(t);
             }
-
-            Ui.printEcho(input);
         }
     }
+
 }
