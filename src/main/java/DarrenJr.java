@@ -35,10 +35,34 @@ class DarrenJr {
                 t.markAsNotDone();
                 Ui.printUnmarked(t);
 
-            } else {
-                Task t = new Task(input);
+            } else if (input.startsWith("todo ")){
+                String description = input.substring(5).trim();
+                Task t = new ToDoTask(description);
                 tasks.add(t);
                 Ui.printAdded(t);
+            } else if (input.startsWith("deadline ")) {
+                String s = input.substring(9).trim(); //removes deadline
+                int byIdx = s.toLowerCase().lastIndexOf(" /by "); //index where by starts
+                String description = s.substring(0, byIdx).trim();
+                String by = s.substring(byIdx + 5).trim();
+                Task t = new DeadlinesTask(description, by);
+                tasks.add(t);
+                Ui.printAdded(t);
+            } else if (input.startsWith("event ")) {
+                String s = input.substring(6).trim();
+                int fromIdx = s.toLowerCase().lastIndexOf(" /from ");
+                int toIdx   = s.toLowerCase().lastIndexOf(" /to ");
+
+                String description = s.substring(0, fromIdx).trim();
+                String from = s.substring(fromIdx + 7, toIdx).trim();
+                String to   = s.substring(toIdx + 5).trim();
+
+                Task t = new EventsTask(description, from, to);
+                tasks.add(t);
+                Ui.printAdded(t);
+            } else {
+                //unknown command
+                System.out.println("Unknown command. Try: todo, deadline, event, list, mark, unmark, bye");
             }
         }
     }
