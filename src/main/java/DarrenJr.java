@@ -16,55 +16,96 @@ class DarrenJr {
         while (true) {
             String input = sc.nextLine().trim();
 
-            if (input.equalsIgnoreCase("bye")) {
-                Ui.printGoodbye();
-                break;
+            try {
+                if (input.equalsIgnoreCase("bye")) {
+                    Ui.printGoodbye();
+                    break;
+                }
 
-            } else if (input.equalsIgnoreCase("list")) {
-                Ui.printList(tasks);
+                if (input.equalsIgnoreCase("list")) {
+                    Ui.printList(tasks);
+                    continue;
+                }
 
-            } else if (input.startsWith("mark ")) {
-                int index = Integer.parseInt(input.split(" ")[1]) - 1; // 1-based input
-                Task t = tasks.get(index);
-                t.markAsDone();
-                Ui.printMarked(t);
+                if (input.startsWith("mark ")) {
+                    String[] p = input.split("\\s+");
+                    if (p.length < 2) throw new DarrenAssistantException("Usage: mark <number>");
+                    int idx = Integer.parseInt(p[1]) - 1; // 0-based
+                    if (idx < 0 || idx >= tasks.size()) throw new DarrenAssistantException("No such task: " + (idx + 1));
+                    Task t = tasks.get(idx);
+                    t.markAsDone();
+                    Ui.printMarked(t);
+                    continue;
+                }
 
-            } else if (input.startsWith("unmark ")) {
-                int index = Integer.parseInt(input.split(" ")[1]) - 1;
-                Task t = tasks.get(index);
-                t.markAsNotDone();
-                Ui.printUnmarked(t);
+                if (input.startsWith("unmark ")) {
+                    String[] p = input.split("\\s+");
+                    if (p.length < 2) throw new DarrenAssistantException("Usage: unmark <number>");
+                    int idx = Integer.parseInt(p[1]) - 1;
+                    if (idx < 0 || idx >= tasks.size()) throw new DarrenAssistantException("No such task: " + (idx + 1));
+                    Task t = tasks.get(idx);
+                    t.markAsNotDone();
+                    Ui.printUnmarked(t);
+                    continue;
+                }
 
-            } else if (input.startsWith("todo ")){
-                String description = input.substring(5).trim();
-                Task t = new ToDoTask(description);
-                tasks.add(t);
-                Ui.printAdded(t);
-            } else if (input.startsWith("deadline ")) {
-                String s = input.substring(9).trim(); //removes deadline
-                int byIdx = s.toLowerCase().lastIndexOf(" /by "); //index where by starts
-                String description = s.substring(0, byIdx).trim();
-                String by = s.substring(byIdx + 5).trim();
-                Task t = new DeadlinesTask(description, by);
-                tasks.add(t);
-                Ui.printAdded(t);
-            } else if (input.startsWith("event ")) {
-                String s = input.substring(6).trim();
-                int fromIdx = s.toLowerCase().lastIndexOf(" /from ");
-                int toIdx   = s.toLowerCase().lastIndexOf(" /to ");
+                if (input.equals("todo")) {
+                    throw new DarrenAssistantException("Todo needs a description.");
+                }
+                if (input.startsWith("todo ")) {
+                    String desc = input.substring(5).trim();
+                    if (desc.isEmpty()) throw new DarrenAssistantException("Todo needs a description.");
+                    Task t = new ToDoTask(desc);
+                    tasks.add(t);
+                    Ui.printAdded(t);
+                    continue;
+                }
 
-                String description = s.substring(0, fromIdx).trim();
-                String from = s.substring(fromIdx + 7, toIdx).trim();
-                String to   = s.substring(toIdx + 5).trim();
+                if (input.equals("deadline")) {
+                    throw new DarrenAssistantException("Use: deadline <desc> /by <when>");
+                }
+                if (input.startsWith("deadline ")) {
+                    String s = input.substring(9).trim();
+                    int by = s.toLowerCase().lastIndexOf(" /by ");
+                    if (by < 0) throw new DarrenAssistantException("Use: deadline <desc> /by <when>");
+                    String desc = s.substring(0, by).trim();
+                    String when = s.substring(by + 5).trim();
+                    if (desc.isEmpty() || when.isEmpty()) throw new DarrenAssistantException("Use: deadline <desc> /by <when>");
+                    Task t = new DeadlinesTask(desc, when);
+                    tasks.add(t);
+                    Ui.printAdded(t);
+                    continue;
+                }
 
-                Task t = new EventsTask(description, from, to);
-                tasks.add(t);
-                Ui.printAdded(t);
-            } else {
-                //unknown command
-                System.out.println("Unknown command. Try: todo, deadline, event, list, mark, unmark, bye");
+                if (input.equals("event")) {
+                    throw new DarrenAssistantException("Use: event <desc> /from <start> /to <end>");
+                }
+                if (input.startsWith("event ")) {
+                    String s = input.substring(6).trim();
+                    int f = s.toLowerCase().lastIndexOf(" /from ");
+                    int to = s.toLowerCase().lastIndexOf(" /to ");
+                    if (f < 0 || to < 0 || to < f) throw new DarrenAssistantException("Use: event <desc> /from <start> /to <end>");
+                    String desc = s.substring(0, f).trim();
+                    String from = s.substring(f + 7, to).trim();
+                    String end  = s.substring(to + 5).trim();
+                    if (desc.isEmpty() || from.isEmpty() || end.isEmpty()) throw new DarrenAssistantException("Use: event <desc> /from <start> /to <end>");
+                    Task t = new EventsTask(desc, from, end);
+                    tasks.add(t);
+                    Ui.printAdded(t);
+                    continue;
+                }
+
+                // everything else
+                throw new DarrenAssistantException("Sorry, I don't understand that.");
+
+            } catch (NumberFormatException e) {
+                Ui.printError("That’s not a number.");
+            } catch (DarrenAssistantException e) {
+                Ui.printError(e.getMessage());
             }
         }
     }
 
+
 }
+

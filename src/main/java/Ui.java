@@ -43,6 +43,12 @@ public class Ui {
         printLine();
     }
 
+    public static void printError(String msg) {
+        printLine();
+        System.out.println(msg);
+        printLine();
+    }
+
 
     private static void printLine() {
         System.out.println("_____________________________________________________");
