@@ -1,7 +1,5 @@
 @ECHO OFF
-
-set JAVA_HOME=C:\Users\darre\.jdks\ms-17
-set PATH=%JAVA_HOME%\bin;%PATH%
+@REM echo %PATH%
 
 
 REM create bin directory if it doesn't exist
@@ -11,8 +9,7 @@ REM delete output from previous run
 del ACTUAL.TXT
 
 REM compile the code into the bin folder
-javac -Xlint:none -d ..\bin "..\src\main\java\*.java"
-
+javac  -cp ..\src\main\java -Xlint:none -d ..\bin ..\src\main\java\*.java
 IF ERRORLEVEL 1 (
     echo ********** BUILD FAILURE **********
     exit /b 1
