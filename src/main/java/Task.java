@@ -23,8 +23,13 @@ public abstract class Task {
     }
 
     protected abstract String getTypeIcon();
+
+    public abstract String toStorageString();
+
     @Override
     public String toString() {
         return getStatusIcon() + " " + description;
     }
+
+
 }
