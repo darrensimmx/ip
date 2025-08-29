@@ -16,4 +16,9 @@ public class EventsTask extends Task{
     public String toString() {
         return getTypeIcon() + getStatusIcon() + " " + description + " (from: " + from + " to: " + to + ")";
     }
+
+    @Override
+    public String toStorageString() {
+        return "E" + " | " + (isDone ? "1" : "0") + " | " + this.description + " | " + " (from: " + from + " to: " + to + ")";
+    }
 }

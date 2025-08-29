@@ -12,4 +12,9 @@ public class ToDoTask extends Task{
     public String toString() {
         return getTypeIcon() + getStatusIcon() + " " + description;
     }
+
+    @Override
+    public String toStorageString() {
+        return "T | " + (isDone ? "1" : "0") + " | " + description;
+    };
 }
