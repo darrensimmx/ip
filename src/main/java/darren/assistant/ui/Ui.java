@@ -3,6 +3,8 @@ package darren.assistant.ui;
 import darren.assistant.tasks.Task;
 import darren.assistant.tasks.TaskList;
 
+import java.util.List;
+
 public class Ui {
     public static void printWelcome() {
         printLine();
@@ -62,8 +64,24 @@ public class Ui {
         printLine();
     }
 
+    public static void printFindResult(List<Task> matches) {
+        printLine();
+        if (matches.isEmpty()) {
+            System.out.println("No matching tasks found.");
+        } else {
+            System.out.println("Here are the matching tasks in your list:");
+            int i = 1;
+            for (Task t : matches) {
+                System.out.println(i + "." + t);
+                i++;
+            }
+        }
+        printLine();
+    }
+
 
     private static void printLine() {
         System.out.println("_____________________________________________________");
     }
+
 }
