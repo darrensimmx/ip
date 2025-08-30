@@ -56,7 +56,7 @@ public class Storage {
                     String line = sc.nextLine();
                     try {
                         // implement parseLine to build Todo/Deadline/Event
-                        tasks.add(Parser.parseTask(line));
+                        tasks.add(Parser.parseStoredTask(line));
                     } catch (Exception ignored) {
                         // skip malformed lines
                     }

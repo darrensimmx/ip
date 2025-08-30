@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class TaskList {
     private final ArrayList<Task> tasks;
@@ -35,4 +36,7 @@ public class TaskList {
         return tasks.remove(idx);
     }
 
+    public List<Task> asList() {
+        return tasks;
+    }
 }
