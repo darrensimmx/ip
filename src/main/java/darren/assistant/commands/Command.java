@@ -1,4 +1,11 @@
+package darren.assistant.commands;
+
 import java.io.IOException;
+
+import darren.assistant.storage.Storage;
+import darren.assistant.tasks.TaskList;
+import darren.assistant.ui.DarrenAssistantException;
+import darren.assistant.ui.Ui;
 
 public abstract class Command {
     protected boolean isExit = false;

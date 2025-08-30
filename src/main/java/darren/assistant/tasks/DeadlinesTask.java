@@ -1,7 +1,9 @@
+package darren.assistant.tasks;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class DeadlinesTask extends Task{
+public class DeadlinesTask extends Task {
     private final LocalDateTime by;
 
     public DeadlinesTask(String description, LocalDateTime by) {

@@ -1,7 +1,12 @@
+package darren.assistant.ui;
+
+import darren.assistant.tasks.Task;
+import darren.assistant.tasks.TaskList;
+
 public class Ui {
     public static void printWelcome() {
         printLine();
-        System.out.println("Hello! Im DarrenAssistant, the finest chatbot you will find out there!\n What can I do for you?");
+        System.out.println("Hello! Im darren.assisant.DarrenAssistant, the finest chatbot you will find out there!\n What can I do for you?");
         printLine();
     }
 
