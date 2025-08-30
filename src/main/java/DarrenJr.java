@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.time.LocalDateTime;
 
 class DarrenJr {
     private final Scanner sc;
@@ -69,11 +70,20 @@ class DarrenJr {
                 if (input.startsWith("deadline ")) {
                     String s = raw.substring(9).trim();
                     int by = s.toLowerCase().lastIndexOf(" /by ");
-                    if (by < 0) throw new DarrenAssistantException("Use: deadline <desc> /by <when>");
+                    if (by < 0) {
+                        throw new DarrenAssistantException("Use: deadline <desc> /by <when> || either use d/MM/yyyy HH:mm or d/MM/yyyy");
+                    }
+
                     String desc = s.substring(0, by).trim();
                     String when = s.substring(by + 5).trim();
-                    if (desc.isEmpty() || when.isEmpty()) throw new DarrenAssistantException("Use: deadline <desc> /by <when>");
-                    Task t = new DeadlinesTask(desc, when);
+
+                    if (desc.isEmpty() || when.isEmpty()) {
+                        throw new DarrenAssistantException("Use: deadline <desc> /by <when> || either use d/MM/yyyy HH:mm or d/MM/yyyy");
+                    }
+
+                    // Parse "when" into a LocalDateTime
+                    LocalDateTime bytime = Parser.parseDateTime((when));
+                    Task t = new DeadlinesTask(desc, bytime);
                     tasks.add(t);
                     Ui.printAdded(t);
                     continue;
@@ -86,12 +96,22 @@ class DarrenJr {
                     String s = raw.substring(6).trim();
                     int f = s.toLowerCase().lastIndexOf(" /from ");
                     int to = s.toLowerCase().lastIndexOf(" /to ");
-                    if (f < 0 || to < 0 || to < f) throw new DarrenAssistantException("Use: event <desc> /from <start> /to <end>");
+
+                    if (f < 0 || to < 0 || to < f) {
+                        throw new DarrenAssistantException("Use: event <desc> /from <start> /to <end>");
+                    }
+
                     String desc = s.substring(0, f).trim();
                     String from = s.substring(f + 7, to).trim();
                     String end  = s.substring(to + 5).trim();
-                    if (desc.isEmpty() || from.isEmpty() || end.isEmpty()) throw new DarrenAssistantException("Use: event <desc> /from <start> /to <end>");
-                    Task t = new EventsTask(desc, from, end);
+
+                    if (desc.isEmpty() || from.isEmpty() || end.isEmpty()) {
+                        throw new DarrenAssistantException("Use: event <desc> /from <start> /to <end>");
+                    };
+
+                    LocalDateTime fromTime = Parser.parseDateTime(from);
+                    LocalDateTime toTime = Parser.parseDateTime(end);
+                    Task t = new EventsTask(desc, fromTime, toTime);
                     tasks.add(t);
                     Ui.printAdded(t);
                     continue;
@@ -119,6 +139,8 @@ class DarrenJr {
             } catch (NumberFormatException e) {
                 Ui.printError("That’s not a number.");
             } catch (DarrenAssistantException e) {
+                Ui.printError(e.getMessage());
+            } catch (IllegalArgumentException e) {
                 Ui.printError(e.getMessage());
             }
         }

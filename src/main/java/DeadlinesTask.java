@@ -1,7 +1,10 @@
-public class DeadlinesTask extends Task{
-    private final String by;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-    public DeadlinesTask(String description, String by) {
+public class DeadlinesTask extends Task{
+    private final LocalDateTime by;
+
+    public DeadlinesTask(String description, LocalDateTime by) {
         super(description);
         this.by = by;
     }
@@ -13,11 +16,13 @@ public class DeadlinesTask extends Task{
 
     @Override
     public String toString() {
-        return getTypeIcon() + getStatusIcon() + " " + description + " (by: " + by + ")";
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("MMM d yyy, h:mm a");
+        return getTypeIcon() + getStatusIcon() + " " + description + " (by: " + by.format(fmt) + ")";
     }
 
     @Override
     public String toStorageString() {
-        return "D" + " | " + (isDone ? "1" : "0") + " | " + this.description + " | " + this.by;
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("MMM d yyy, h:mm a");
+        return "D" + " | " + (isDone ? "1" : "0") + " | " + this.description + " | " + by.format(fmt);
     }
 }
