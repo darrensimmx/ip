@@ -12,9 +12,35 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Parses user input (interactive commands) and stored lines (for persistence)
+ * into domain objects used by the application.
+ *
+ * <p>Responsibilities:</p>
+ * <ul>
+ *   <li>Convert raw user commands into concrete {@link Command} objects.</li>
+ *   <li>Parse date/time strings typed by the user into {@link LocalDateTime}.</li>
+ *   <li>Reconstruct {@link Task} objects from storage lines.</li>
+ * </ul>
+ */
 public class Parser {
-    /*
-    * We have to split between each case, and parse differently due to difference in length and what it represents at each index
+    /**
+     * Parses a single line of user input into a {@link Command}.
+     *
+     * <p>Supported commands (case-insensitive):</p>
+     * <ul>
+     *   <li><code>bye</code></li>
+     *   <li><code>list</code></li>
+     *   <li><code>todo &lt;desc&gt;</code></li>
+     *   <li><code>deadline &lt;desc&gt; /by &lt;when&gt;</code></li>
+     *   <li><code>event &lt;desc&gt; /from &lt;start&gt; /to &lt;end&gt;</code></li>
+     *   <li><code>mark &lt;index&gt;</code>, <code>unmark &lt;index&gt;</code>, <code>delete &lt;index&gt;</code></li>
+     * </ul>
+     *
+     * @param line raw user input
+     * @return a concrete {@link Command} to be executed
+     * @throws DarrenAssistantException if the input is empty, malformed,
+     *                                  or corresponds to an unknown command
      */
     public static Command parseTask(String line) throws DarrenAssistantException {
         String input = line.trim();
@@ -78,7 +104,7 @@ public class Parser {
             DateTimeFormatter.ISO_LOCAL_DATE_TIME,
     };
 
-    /*
+    /**
     * Time formatter for user input d/M/yyyy, time set to 00:00
      */
     private static final DateTimeFormatter[] DAY_PATTERNS = new DateTimeFormatter[] {
@@ -86,8 +112,15 @@ public class Parser {
             DateTimeFormatter.ISO_LOCAL_DATE,
     };
 
-    /*
-    * checks if user input aligns with any of the format, if not throw error of wrong format
+    /**
+     * Parses a user-supplied date/time string into a {@link LocalDateTime}.
+     *
+     * <p>Tries {@link #DATE_PATTERNS} first; if none match,
+     * tries {@link #DAY_PATTERNS} and returns the start of that day.</p>
+     *
+     * @param s the date/time string supplied by the user
+     * @return the parsed {@link LocalDateTime}
+     * @throws IllegalArgumentException if none of the supported patterns match
      */
     public static LocalDateTime parseDateTime(String s) {
         for (DateTimeFormatter f : DATE_PATTERNS) {
@@ -117,8 +150,19 @@ public class Parser {
         }
     }
 
-    /*
-    * Parse used for storage
+    /**
+     * Parses a single storage line into a concrete {@link Task}.
+     *
+     * <p>Expected formats (pipe-separated):</p>
+     * <ul>
+     *   <li><code>T | 0|1 | &lt;desc&gt;</code></li>
+     *   <li><code>D | 0|1 | &lt;desc&gt; | &lt;by&gt;</code></li>
+     *   <li><code>E | 0|1 | &lt;desc&gt; | &lt;from&gt; | &lt;to&gt;</code></li>
+     * </ul>
+     *
+     * @param line the raw line from the save file
+     * @return the reconstructed {@link Task}
+     * @throws IllegalArgumentException if the line is malformed or has an unknown type
      */
     public static Task parseStoredTask(String line) {
         String[] parts = line.split("\\|");
