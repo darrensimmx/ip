@@ -67,6 +67,10 @@ public class Parser {
             return new DeleteCommand(parseIndex(input));
         }
 
+        if (low.startsWith("find ")) {
+            return new FindCommand(input.substring(5).trim());
+        }
+
         throw new DarrenAssistantException("Sorry, I don't understand that");
     }
 
