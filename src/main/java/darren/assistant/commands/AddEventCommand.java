@@ -1,4 +1,11 @@
+package darren.assistant.commands;
+import darren.assistant.tasks.Task;
+import darren.assistant.ui.Ui;
+import darren.assistant.storage.Storage;
 import java.io.IOException;
+import darren.assistant.tasks.TaskList;
+import darren.assistant.tasks.EventsTask;
+import darren.assistant.Parser;
 import java.time.LocalDateTime;
 
 public class AddEventCommand extends Command{

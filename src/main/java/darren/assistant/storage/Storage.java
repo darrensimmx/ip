@@ -1,3 +1,8 @@
+package darren.assistant.storage;
+
+import darren.assistant.Parser;
+import darren.assistant.tasks.Task;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -12,7 +17,7 @@ public class Storage {
     * Constructor when no params provided
     */
     public Storage() {
-        this(Paths.get("data", "DarrenAssistant.txt"));
+        this(Paths.get("data", "darren.assistant.DarrenAssistant.txt"));
     }
 
     /*
@@ -23,7 +28,7 @@ public class Storage {
     }
 
     /*
-    * Function to save a TaskList of type List<Task>
+    * Function to save a darren.assistant.tasks.TaskList of type List<darren.assistant.tasks.Task>
     *
     */
 

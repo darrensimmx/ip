@@ -1,3 +1,12 @@
+package darren.assistant;
+
+import darren.assistant.commands.*;
+import darren.assistant.tasks.DeadlinesTask;
+import darren.assistant.tasks.EventsTask;
+import darren.assistant.tasks.Task;
+import darren.assistant.tasks.ToDoTask;
+import darren.assistant.ui.DarrenAssistantException;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -80,7 +89,7 @@ public class Parser {
     /*
     * checks if user input aligns with any of the format, if not throw error of wrong format
      */
-    static LocalDateTime parseDateTime(String s) {
+    public static LocalDateTime parseDateTime(String s) {
         for (DateTimeFormatter f : DATE_PATTERNS) {
             try {
                 return LocalDateTime.parse(s.trim(), f);

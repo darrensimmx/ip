@@ -1,6 +1,14 @@
+package darren.assistant.commands;
+
+import darren.assistant.storage.Storage;
+import darren.assistant.tasks.Task;
+import darren.assistant.tasks.TaskList;
+import darren.assistant.ui.DarrenAssistantException;
+import darren.assistant.ui.Ui;
+
 import java.io.IOException;
 
-public class MarkCommand extends Command{
+public class MarkCommand extends Command {
     private final int idx;
 
     public MarkCommand(int idx) {

@@ -1,10 +1,17 @@
+package darren.assistant;
+
+import darren.assistant.commands.Command;
+import darren.assistant.storage.Storage;
+import darren.assistant.tasks.TaskList;
+import darren.assistant.ui.DarrenAssistantException;
+import darren.assistant.ui.Ui;
+
 import java.util.Scanner;
-import java.time.LocalDateTime;
 
 class DarrenJr {
     private final Scanner sc;
     private final Ui ui = new Ui();
-    private final Storage storage = new Storage(java.nio.file.Paths.get("data", "DarrenAssistant.txt"));
+    private final Storage storage = new Storage(java.nio.file.Paths.get("data", "darren.assisant.DarrenAssistant.txt"));
     private final TaskList tasks = new TaskList();
 
     //Constructor

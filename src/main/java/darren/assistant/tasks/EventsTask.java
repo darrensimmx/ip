@@ -1,7 +1,9 @@
+package darren.assistant.tasks;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class EventsTask extends Task{
+public class EventsTask extends Task {
     private LocalDateTime from;
     private LocalDateTime to;
     public EventsTask(String description, LocalDateTime from, LocalDateTime to) {
