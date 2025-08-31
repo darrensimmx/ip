@@ -4,21 +4,21 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
-repositories {
-    mavenCentral()
-}
+repositories { mavenCentral() }
 
 dependencies {
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
-    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly   'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+}
+
+java {
+    toolchain { languageVersion = JavaLanguageVersion.of(17) } // optional but recommended
 }
 
 test {
     useJUnitPlatform()
-
     testLogging {
         events "passed", "skipped", "failed"
-
         showExceptions true
         exceptionFormat "full"
         showCauses true
@@ -28,14 +28,19 @@ test {
 }
 
 application {
-    mainClass.set("seedu.duke.Duke")
+    mainClass.set('darren.assistant.DarrenAssistant')
+}
+
+jar {
+    manifest { attributes('Main-Class': application.mainClass.get()) }
 }
 
 shadowJar {
-    archiveBaseName = "duke"
-    archiveClassifier = null
+    archiveBaseName = 'DarrenAssistant'
+    archiveClassifier = null                   // produces DarrenAssistant.jar (no -all suffix)
+    manifest { attributes('Main-Class': application.mainClass.get()) }
 }
 
-run{
+run {
     standardInput = System.in
 }
