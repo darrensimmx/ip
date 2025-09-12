@@ -1,46 +1,25 @@
 plugins {
-    id 'java'
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
 }
 
 repositories { mavenCentral() }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
-    testRuntimeOnly   'org.junit.jupiter:junit-jupiter-engine:5.10.0'
-}
-
 java {
-    toolchain { languageVersion = JavaLanguageVersion.of(17) } // optional but recommended
+    // Keeps your system JDK as-is but compiles with JDK 17
+    toolchain { languageVersion = JavaLanguageVersion.of(17) }
 }
 
-test {
-    useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed"
-        showExceptions true
-        exceptionFormat "full"
-        showCauses true
-        showStackTraces true
-        showStandardStreams = false
-    }
+javafx {
+    version = '17.0.9'
+    modules = ['javafx.controls', 'javafx.fxml']
 }
 
 application {
-    mainClass.set('darren.assistant.DarrenAssistant')
-}
-
-jar {
-    manifest { attributes('Main-Class': application.mainClass.get()) }
-}
-
-shadowJar {
-    archiveBaseName = 'DarrenAssistant'
-    archiveClassifier = null                   // produces DarrenAssistant.jar (no -all suffix)
-    manifest { attributes('Main-Class': application.mainClass.get()) }
+    // FIX THIS to your actual package:
+    mainClass = 'duke.Launcher'   // or 'java.Launcher' temporarily if you haven't renamed packages yet
 }
 
 run {
-    standardInput = System.in
+    enableAssertions = true
 }
