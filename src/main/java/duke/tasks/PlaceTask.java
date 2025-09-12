@@ -19,6 +19,11 @@ public class PlaceTask extends Task {
     }
 
     @Override
+    public String getTypeIcon() {
+        return "P";
+    }
+
+    @Override
     public String toStorageString() {
         // Format: P | done | desc | place
         return String.format("P | %d | %s | %s",
