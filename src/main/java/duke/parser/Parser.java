@@ -48,56 +48,40 @@ public class Parser {
             throw new DarrenAssistantException("Empty command.");
         }
 
-        String low = input.toLowerCase();
-
-        if (low.equals("bye")) {
-            return new ExitCommand();
-        }
-
-        if (low.equals("list")) {
-            return new ListCommand();
-        }
-
-        if (low.startsWith("todo ")) {
-            return new AddTodoCommand(input.substring(5).trim());
-        }
-
-        if (low.startsWith("deadline ")) {
-            String s = input.substring(9).trim();
-            String[] p = s.split("(?i)\\s*/by\\s+", 2);
-            if (p.length < 2) {
-                throw new DarrenAssistantException("Use: deadline <desc> /by <when>");
+        String[] parts = input.split("\\s+", 2);
+        String keyword = parts[0].toLowerCase();
+        String args = parts.length > 1 ? parts[1].trim() : "";
+        return switch (keyword) {
+            case "bye"    -> new ExitCommand();
+            case "list"   -> new ListCommand();
+            case "todo"   -> {
+                if (args.isEmpty()) {
+                    throw new DarrenAssistantException("Use: todo <desc>");
+                }
+                yield new AddTodoCommand(args);
             }
-            return new AddDeadlineCommand(p[0].trim(), p[1].trim());
-        }
-
-        if (low.startsWith("event ")) {
-            String s = input.substring(6).trim();
-            String[] f = s.split("(?i)\\s*/from\\s+", 2);
-            String[] t = (f.length == 2) ? f[1].split("(?i)\\s*/to\\s+", 2) : new String[0];
-            if (f.length < 2 || t.length < 2) {
-                throw new DarrenAssistantException("Use: event <desc> /from <start> /to <end>");
+            case "deadline" -> {
+                String[] p = args.split("(?i)\\s*/by\\s+", 2);
+                if (p.length < 2) {
+                    throw new DarrenAssistantException("Use: deadline <desc> /by <when>");
+                }
+                yield new AddDeadlineCommand(p[0].trim(), p[1].trim());
             }
-            return new AddEventCommand(f[0].trim(), t[0].trim(), t[1].trim());
-        }
+            case "event" -> {
+                String[] f = args.split("(?i)\\s*/from\\s+", 2);
+                String[] t = (f.length == 2) ? f[1].split("(?i)\\s*/to\\s+", 2) : new String[0];
+                if (f.length < 2 || t.length < 2) {
+                    throw new DarrenAssistantException("Use: event <desc> /from <start> /to <end>");
+                }
+                yield new AddEventCommand(f[0].trim(), t[0].trim(), t[1].trim());
+            }
+            case "mark"    -> new MarkCommand(parseIndex(input));
+            case "unmark"  -> new UnmarkCommand(parseIndex(input));
+            case "delete"  -> new DeleteCommand(parseIndex(input));
+            case "find"    -> new FindCommand(args);
+            default        -> throw new DarrenAssistantException("Sorry, I don't understand that");
+        };
 
-        if (low.startsWith("mark ")) {
-            return new MarkCommand(parseIndex(input));
-        }
-
-        if (low.startsWith("unmark ")) {
-            return new UnmarkCommand(parseIndex(input));
-        }
-
-        if (low.startsWith("delete ")) {
-            return new DeleteCommand(parseIndex(input));
-        }
-
-        if (low.startsWith("find ")) {
-            return new FindCommand(input.substring(5).trim());
-        }
-
-        throw new DarrenAssistantException("Sorry, I don't understand that");
     }
 
     /*
