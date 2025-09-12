@@ -1,5 +1,7 @@
 package darren.assistant.tasks;
 
+import duke.tasks.Task;
+import duke.tasks.ToDoTask;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
