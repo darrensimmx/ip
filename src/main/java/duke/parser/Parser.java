@@ -75,6 +75,13 @@ public class Parser {
                 }
                 yield new AddEventCommand(f[0].trim(), t[0].trim(), t[1].trim());
             }
+            case "place" -> {
+                String[] p = args.split("(?i)\\s*/at\\s+", 2);
+                if (p.length < 2) {
+                    throw new DarrenAssistantException("Use: place <desc> /at <location>");
+                }
+                yield new AddPlaceCommand(p[0].trim(), p[1].trim());
+            }
             case "mark"    -> new MarkCommand(parseIndex(input));
             case "unmark"  -> new UnmarkCommand(parseIndex(input));
             case "delete"  -> new DeleteCommand(parseIndex(input));

@@ -1,7 +1,9 @@
 package darren.assistant.tasks;
 
+import duke.tasks.DeadlinesTask;
+import duke.tasks.Task;
+import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
