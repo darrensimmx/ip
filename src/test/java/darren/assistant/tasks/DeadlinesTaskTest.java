@@ -1,7 +1,7 @@
 package darren.assistant.tasks;
 
-import duke.tasks.DeadlinesTask;
-import duke.tasks.Task;
+import jarvis.tasks.DeadlinesTask;
+import jarvis.tasks.Task;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
