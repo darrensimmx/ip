@@ -128,7 +128,7 @@ public class Parser {
                 return LocalDate.parse(s.trim(), f).atStartOfDay();
             } catch (DateTimeParseException ignored) {}
         }
-        throw new IllegalArgumentException("I couldn't understand the date/time: " + s + " Try formatting in d/MMMM/yyyy or d/MMMM/yyyy HH:mm");
+        throw new IllegalArgumentException("I couldn't understand the date/time: " + s + " Try formatting in DD/MM/yyyy or DD/MM/yyyy HH:mm");
     }
 
     /*
