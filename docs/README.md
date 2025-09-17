@@ -69,7 +69,7 @@ The specified task will be marked as done and reflected with the chatbot informi
 ```
 
 ## Mark task as undone (unmark)
-Here you can unmark a task that was previously completed
+Here, you can unmark a task that was previously completed
 
 Example: `unmark <task_number>`
 ```
