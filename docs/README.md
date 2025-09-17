@@ -77,7 +77,7 @@ The specified task will be marked as not done and reflected with the chatbot inf
 ```
 
 ## Exit programme
-Here you can close the chatbot application
+Here, you can close the chatbot application
 
 Example: `bye`
 
