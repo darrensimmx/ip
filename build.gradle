@@ -1,46 +1,43 @@
 plugins {
-    id 'java'
     id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
+
 repositories { mavenCentral() }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
-    testRuntimeOnly   'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+java {
+    // Keeps your system JDK as-is but compiles with JDK 17
+    toolchain { languageVersion = JavaLanguageVersion.of(17) }
 }
 
-java {
-    toolchain { languageVersion = JavaLanguageVersion.of(17) } // optional but recommended
+javafx {
+    version = '17.0.9'
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+application {
+    // FIX THIS to your actual package:
+    mainClass = 'jarvis.Launcher'   // or 'java.Launcher' temporarily if you haven't renamed packages yet
+}
+
+run {
+    enableAssertions = true
+}
+
+dependencies {
+    // JUnit 5
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // JUnit 4 + bridge
+    testImplementation 'junit:junit:4.13.2'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.10.2'
 }
 
 test {
     useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed"
-        showExceptions true
-        exceptionFormat "full"
-        showCauses true
-        showStackTraces true
-        showStandardStreams = false
-    }
 }
 
-application {
-    mainClass.set('darren.assistant.DarrenAssistant')
-}
-
-jar {
-    manifest { attributes('Main-Class': application.mainClass.get()) }
-}
-
-shadowJar {
-    archiveBaseName = 'DarrenAssistant'
-    archiveClassifier = null                   // produces DarrenAssistant.jar (no -all suffix)
-    manifest { attributes('Main-Class': application.mainClass.get()) }
-}
-
-run {
-    standardInput = System.in
-}

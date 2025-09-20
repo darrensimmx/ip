@@ -1,5 +1,7 @@
 package darren.assistant.tasks;
 
+import jarvis.tasks.Task;
+import jarvis.tasks.ToDoTask;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
