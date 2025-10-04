@@ -123,6 +123,23 @@ public class Ui {
         return "OK, I've marked this task as not done yet:\n  " + t;
     }
 
+    public String getHelpMessage() {
+        return "Hello! I'm Jarvis, your task management assistant!\n\n" +
+                "Here are the commands you can use:\n" +
+                "list - Show all tasks\n" +
+                "todo <description> - Add a todo task\n" +
+                "deadline <description> /by <date time> - Add a deadline task\n" +
+                "event <description> /from <start> /to <end> - Add an event task\n" +
+                "place <description> /at <location> - Add a place task\n" +
+                "mark <task number> - Mark a task as done\n" +
+                "unmark <task number> - Mark a task as not done\n" +
+                "delete <task number> - Delete a task\n" +
+                "find <keyword> - Find tasks containing the keyword\n" +
+                "help - Show this help message\n" +
+                "bye - Exit the application\n\n" +
+                "Date format: d/M/yyyy HHmm (e.g., 2/12/2023 1800)\n" +
+                "Type any command to get started!";
+    }
 
     private static void printLine() {
         System.out.println("_____________________________________________________");

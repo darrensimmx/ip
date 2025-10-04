@@ -33,6 +33,17 @@ public class MainWindow extends AnchorPane {
     /** Injects the Duke instance */
     public void setJarvis(Jarvis j) {
         jarvis = j;
+        showWelcomeMessage();
+    }
+
+    /**
+     * Shows the welcome help message when the application starts
+     */
+    private void showWelcomeMessage() {
+        String helpResponse = jarvis.getResponse("help");
+        dialogContainer.getChildren().add(
+                DialogBox.getDukeDialog(helpResponse, dukeImage, "HelpCommand")
+        );
     }
 
     /**

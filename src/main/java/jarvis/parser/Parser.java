@@ -34,7 +34,10 @@ public class Parser {
      *   <li><code>todo &lt;desc&gt;</code></li>
      *   <li><code>deadline &lt;desc&gt; /by &lt;when&gt;</code></li>
      *   <li><code>event &lt;desc&gt; /from &lt;start&gt; /to &lt;end&gt;</code></li>
+     *   <li><code>place &lt;desc&gt; /at &lt;location&gt;</code></li>
      *   <li><code>mark &lt;index&gt;</code>, <code>unmark &lt;index&gt;</code>, <code>delete &lt;index&gt;</code></li>
+     *   <li><code>find &lt;keyword&gt;</code></li>
+     *   <li><code>help</code></li>
      * </ul>
      *
      * @param line raw user input
@@ -51,43 +54,48 @@ public class Parser {
         String[] parts = input.split("\\s+", 2);
         String keyword = parts[0].toLowerCase();
         String args = parts.length > 1 ? parts[1].trim() : "";
-        return switch (keyword) {
-            case "bye"    -> new ExitCommand();
-            case "list"   -> new ListCommand();
-            case "todo"   -> {
+        switch (keyword) {
+            case "bye":
+                return new ExitCommand();
+            case "list":
+                return new ListCommand();
+            case "todo":
                 if (args.isEmpty()) {
                     throw new DarrenAssistantException("Use: todo <desc>");
                 }
-                yield new AddTodoCommand(args);
-            }
-            case "deadline" -> {
+                return new AddTodoCommand(args);
+            case "deadline":
                 String[] p = args.split("(?i)\\s*/by\\s+", 2);
                 if (p.length < 2) {
                     throw new DarrenAssistantException("Use: deadline <desc> /by <when>");
                 }
-                yield new AddDeadlineCommand(p[0].trim(), p[1].trim());
-            }
-            case "event" -> {
+                return new AddDeadlineCommand(p[0].trim(), p[1].trim());
+            case "event":
                 String[] f = args.split("(?i)\\s*/from\\s+", 2);
                 String[] t = (f.length == 2) ? f[1].split("(?i)\\s*/to\\s+", 2) : new String[0];
                 if (f.length < 2 || t.length < 2) {
                     throw new DarrenAssistantException("Use: event <desc> /from <start> /to <end>");
                 }
-                yield new AddEventCommand(f[0].trim(), t[0].trim(), t[1].trim());
-            }
-            case "place" -> {
-                String[] p = args.split("(?i)\\s*/at\\s+", 2);
-                if (p.length < 2) {
+                return new AddEventCommand(f[0].trim(), t[0].trim(), t[1].trim());
+            case "place":
+                String[] p2 = args.split("(?i)\\s*/at\\s+", 2);
+                if (p2.length < 2) {
                     throw new DarrenAssistantException("Use: place <desc> /at <location>");
                 }
-                yield new AddPlaceCommand(p[0].trim(), p[1].trim());
-            }
-            case "mark"    -> new MarkCommand(parseIndex(input));
-            case "unmark"  -> new UnmarkCommand(parseIndex(input));
-            case "delete"  -> new DeleteCommand(parseIndex(input));
-            case "find"    -> new FindCommand(args);
-            default        -> throw new DarrenAssistantException("Sorry, I don't understand that");
-        };
+                return new AddPlaceCommand(p2[0].trim(), p2[1].trim());
+            case "mark":
+                return new MarkCommand(parseIndex(input));
+            case "unmark":
+                return new UnmarkCommand(parseIndex(input));
+            case "delete":
+                return new DeleteCommand(parseIndex(input));
+            case "find":
+                return new FindCommand(args);
+            case "help":
+                return new HelpCommand();
+            default:
+                throw new DarrenAssistantException("Sorry, I don't understand that");
+        }
 
     }
 
@@ -175,15 +183,15 @@ public class Parser {
             }
             case "D": {
                 if (parts.length < 4) throw new IllegalArgumentException("Deadline missing /by");
-                var by = parseDateTime(parts[3].trim());
+                LocalDateTime by = parseDateTime(parts[3].trim());
                 DeadlinesTask t = new DeadlinesTask(desc, by);
                 if (done) t.markAsDone();
                 return t;
             }
             case "E": {
                 if (parts.length < 5) throw new IllegalArgumentException("Event missing /from or /to");
-                var from = parseDateTime(parts[3].trim());
-                var to   = parseDateTime(parts[4].trim());
+                LocalDateTime from = parseDateTime(parts[3].trim());
+                LocalDateTime to   = parseDateTime(parts[4].trim());
                 EventsTask t = new EventsTask(desc, from, to);
                 if (done) t.markAsDone();
                 return t;
